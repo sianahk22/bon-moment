@@ -8,6 +8,7 @@ export interface SimParams {
   cloud: boolean
   w: number
   sim: { ecole: boolean; boulangerie: boolean; parking: boolean }
+  ensoleillement?: number // météo du jour (1 par défaut, comme la maquette)
 }
 
 export const PARAMS_DEFAUT: SimParams = { scenario: 'ete', cloud: false, w: .35, sim: { ecole: true, boulangerie: true, parking: false } }
@@ -41,7 +42,7 @@ export interface Quartier {
 }
 
 export function quartierSim(coord: boolean, params: SimParams): Quartier {
-  const ctx = slotCtx(params.scenario, params.cloud), winter = params.scenario !== 'ete'
+  const ctx = slotCtx(params.scenario, params.cloud, params.ensoleillement ?? 1), winter = params.scenario !== 'ete'
   const kWc = 80 + (params.sim.parking ? 30 : 0)
   const prod = ctx.map(c => kWc * .85 * c.sun)
   const parts = ctx.map(c => {

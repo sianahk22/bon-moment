@@ -1,9 +1,16 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import type { UserId } from '../data/appareils'
 import { trouverProfil, type Profil } from '../data/profils'
-import { Panneau } from '../ui/composants'
+import EcranAppareils from '../espace/EcranAppareils'
+import EcranBilan from '../espace/EcranBilan'
+import EcranMoments from '../espace/EcranMoments'
+import EcranPlanning from '../espace/EcranPlanning'
+import { useFoyer } from '../espace/useFoyer'
 import Coque from '../ui/Coque'
-import Icone from '../ui/Icone'
+import EcranVilleBilan from '../ville/EcranVilleBilan'
+import EcranVilleEquipements from '../ville/EcranVilleEquipements'
+import EcranVilleMoments from '../ville/EcranVilleMoments'
 import VueVille from '../ville/VueVille'
 
 interface Props {
@@ -25,23 +32,31 @@ export default function Espace({ prenom, setPrenom }: Props) {
 
 function EspaceProfil({ profil, prenom, setPrenom }: { profil: Profil } & Props) {
   const [onglet, setOnglet] = useState(profil.ongletInitial)
-  const nomOnglet = profil.onglets[onglet].nom
 
   return (
     <Coque profil={profil} onglet={onglet} setOnglet={setOnglet} prenom={prenom} setPrenom={setPrenom}>
-      {profil.id === 'ville' && nomOnglet === 'Ville 3D' ? (
-        <VueVille />
-      ) : (
-        <div className="zone__page">
-          <Panneau>
-            <div className="a-venir">
-              <Icone nom={profil.onglets[onglet].icone} taille={32} />
-              <h2>{nomOnglet}</h2>
-              <p>Cet écran est construit à l'étape suivante.</p>
-            </div>
-          </Panneau>
-        </div>
-      )}
+      {profil.userId
+        ? <EspaceFoyer profil={profil} userId={profil.userId} onglet={profil.onglets[onglet].nom} />
+        : <EspaceVille onglet={profil.onglets[onglet].nom} />}
     </Coque>
   )
+}
+
+// Espaces Particulier, Particulier connecté et Entreprise : mêmes écrans, données du personnage.
+function EspaceFoyer({ profil, userId, onglet }: { profil: Profil; userId: UserId; onglet: string }) {
+  const gratuit = profil.id === 'gratuit', entreprise = profil.id === 'entreprise'
+  const foyer = useFoyer(userId, gratuit)
+
+  if (onglet === 'Moments') return <EcranMoments foyer={foyer} />
+  if (onglet === 'Planning') return <EcranPlanning foyer={foyer} />
+  if (onglet === 'Bilan') return <EcranBilan foyer={foyer} entreprise={entreprise} />
+  return <EcranAppareils foyer={foyer} gratuit={gratuit} libelle={entreprise ? 'Équipements' : 'Appareils'} />
+}
+
+// Espace Ville (Sophie) : la 3D et les écrans de pilotage du quartier.
+function EspaceVille({ onglet }: { onglet: string }) {
+  if (onglet === 'Ville 3D') return <VueVille />
+  if (onglet === 'Moments') return <EcranVilleMoments />
+  if (onglet === 'Bilan') return <EcranVilleBilan />
+  return <EcranVilleEquipements />
 }

@@ -8,6 +8,7 @@ import './styles/tokens.css'
 import './styles/base.css'
 import './styles/composants.css'
 import './styles/pages.css'
+import './styles/espace.css'
 import App from './App'
 
 createRoot(document.getElementById('root')!).render(

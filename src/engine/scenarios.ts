@@ -26,18 +26,19 @@ export const SCENARIOS: Record<ScenarioId, Scenario> = {
 }
 
 // `cloud` remplace state.cloud : le nuage divise le soleil par ~3 entre 11h30 et 15h30.
-export function sunAt(h: number, sc: Scenario, cloud: boolean) {
+// `ensoleillement` (ajout signalé, absent de la maquette) : météo du jour, 1 = comme la maquette.
+export function sunAt(h: number, sc: Scenario, cloud: boolean, ensoleillement = 1) {
   const { peak, rise, set } = sc.sun
   if (h < rise || h > set) return 0
   let v = peak * Math.pow(Math.sin(Math.PI * (h - rise) / (set - rise)), 1.4)
   if (cloud && h >= 11.5 && h < 15.5) v *= 0.3
-  return v
+  return v * ensoleillement
 }
 
-export function slotCtx(scenario: ScenarioId, cloud: boolean): SlotCtx[] {
+export function slotCtx(scenario: ScenarioId, cloud: boolean, ensoleillement = 1): SlotCtx[] {
   const sc = SCENARIOS[scenario]
   return Array.from({ length: SLOTS }, (_, i) => {
     const h = (hourOf(i) + 0.25) % 24
-    return { h, price: isHC(h) ? sc.hc : sc.hp, co2: sc.co2(h), tension: sc.tension(h), sun: sunAt(h, sc, cloud) }
+    return { h, price: isHC(h) ? sc.hc : sc.hp, co2: sc.co2(h), tension: sc.tension(h), sun: sunAt(h, sc, cloud, ensoleillement) }
   })
 }

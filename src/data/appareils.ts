@@ -12,11 +12,14 @@ export const DEVICES = {
 }
 export type DeviceId = keyof typeof DEVICES
 
-let uid = 0
-export const mkTask = (type: DeviceId, deadlineH: number): TacheFoyer => {
+// Fabrique une tâche (même formule que mkTask dans la maquette).
+export const creerTache = (type: DeviceId, deadlineH: number, id: number): TacheFoyer => {
   const d = DEVICES[type]
-  return { id: ++uid, type, ...d, deadlineH, deadline: slotOfHour(deadlineH) || SLOTS, habit: slotOfHour(d.habitH) }
+  return { id, type, ...d, deadlineH, deadline: slotOfHour(deadlineH) || SLOTS, habit: slotOfHour(d.habitH) }
 }
+
+let uid = 0
+export const mkTask = (type: DeviceId, deadlineH: number): TacheFoyer => creerTache(type, deadlineH, ++uid)
 
 export type UserId = 'anais' | 'ines' | 'lily'
 
