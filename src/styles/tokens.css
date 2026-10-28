@@ -1,0 +1,48 @@
+/* Jetons du système visuel « Le Bon Moment » : couleurs, polices, espacements.
+   Règle : ambre = soleil, cyan = réseau, vert = bon moment, rouge = à éviter. Aucun autre accent. */
+:root {
+  /* Fonds (bleu nuit) */
+  --nuit-0: #040a14;
+  --nuit-1: #07111f;
+  --nuit-2: #0b1829;
+  --panneau: rgba(9, 21, 38, .82);
+  --panneau-flottant: rgba(7, 17, 31, .72);
+  --survol: rgba(56, 212, 224, .06);
+
+  /* Traits */
+  --trait: rgba(140, 200, 230, .13);
+  --trait-fort: rgba(140, 210, 240, .28);
+  --grille: rgba(110, 180, 220, .045);
+
+  /* Textes (contraste élevé sur fond sombre) */
+  --texte: #eef4f9;
+  --texte-2: #b6c6d6;
+  --texte-3: #8a9fb4;
+
+  /* Couleurs repères */
+  --soleil: #ffbe3d;
+  --soleil-doux: rgba(255, 190, 61, .13);
+  --soleil-lueur: rgba(255, 190, 61, .45);
+  --reseau: #38d4e0;
+  --reseau-doux: rgba(56, 212, 224, .12);
+  --reseau-lueur: rgba(56, 212, 224, .4);
+  --bon: #47d98a;
+  --bon-doux: rgba(71, 217, 138, .13);
+  --eviter: #ff6a5c;
+  --eviter-doux: rgba(255, 106, 92, .13);
+  --neutre-point: rgba(182, 198, 214, .22);
+
+  /* Polices */
+  --f-texte: 'Instrument Sans Variable', 'Segoe UI', system-ui, sans-serif;
+  --f-chiffres: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  /* Espacements, rayons, durées */
+  --e-1: 4px; --e-2: 8px; --e-3: 12px; --e-4: 16px; --e-5: 24px; --e-6: 32px; --e-7: 48px; --e-8: 72px;
+  --rayon: 16px;
+  --rayon-s: 10px;
+  --rayon-pilule: 999px;
+  --largeur: 1240px;
+  --anim: 220ms cubic-bezier(.2, .7, .2, 1);
+
+  color-scheme: dark;
+}

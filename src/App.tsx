@@ -1,23 +1,31 @@
 import { useState } from 'react'
-import { Link, Route, Routes } from 'react-router-dom'
+import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import Accueil from './pages/Accueil'
 import Espace from './pages/Espace'
 import Offres from './pages/Offres'
+import Logo from './ui/Logo'
 
 export default function App() {
   // Prénom facultatif saisi sur l'accueil : il remplace seulement le prénom affiché.
   const [prenom, setPrenom] = useState('')
+  const { pathname } = useLocation()
 
   return (
-    <div className="app">
+    <div className={`app ${pathname.startsWith('/espace/') ? 'app--onglets' : ''}`}>
       <header className="entete">
-        <Link to="/" className="logo">Le Bon Moment</Link>
-        <nav>
-          <Link to="/offres">Offres</Link>
-        </nav>
+        <div className="entete__dedans">
+          <Link to="/" className="marque" aria-label="Le Bon Moment, accueil">
+            <Logo />
+            Le Bon Moment
+          </Link>
+          <nav aria-label="Navigation principale">
+            <NavLink to="/" end>Espaces</NavLink>
+            <NavLink to="/offres">Offres</NavLink>
+          </nav>
+        </div>
       </header>
 
-      <main>
+      <main className="page">
         <Routes>
           <Route path="/" element={<Accueil prenom={prenom} setPrenom={setPrenom} />} />
           <Route path="/espace/:id" element={<Espace prenom={prenom} />} />
@@ -27,7 +35,7 @@ export default function App() {
       </main>
 
       <footer className="pied">
-        Seuls les tarifs Tempo TTC (1er août 2026) sont réels. Toutes les autres données sont des données de démonstration.
+        <p>Prototype de démonstration. Seuls les tarifs Tempo TTC (en vigueur au 1er août 2026) sont réels : quartier, consommations, production et appareils sont simulés.</p>
       </footer>
     </div>
   )

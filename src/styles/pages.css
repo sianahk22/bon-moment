@@ -1,0 +1,120 @@
+/* Mise en page : coque de l'application, accueil, espaces, offres. */
+
+/* ---------- Coque ---------- */
+.app { min-height: 100vh; display: flex; flex-direction: column; }
+.page { flex: 1; width: 100%; max-width: var(--largeur); margin: 0 auto; padding: var(--e-6) var(--e-4) var(--e-8); }
+
+.entete {
+  position: sticky; top: 0; z-index: 20;
+  border-bottom: 1px solid var(--trait);
+  background: rgba(4, 10, 20, .72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.entete__dedans { max-width: var(--largeur); margin: 0 auto; padding: 12px var(--e-4); display: flex; align-items: center; justify-content: space-between; gap: var(--e-4); }
+.marque { display: inline-flex; align-items: center; gap: 10px; color: var(--texte); font-weight: 650; font-size: 17px; letter-spacing: -.02em; }
+.entete nav { display: flex; align-items: center; gap: var(--e-2); }
+.entete nav a { padding: 7px 12px; border-radius: 10px; color: var(--texte-2); font-size: 14px; font-weight: 550; transition: color var(--anim), background var(--anim); }
+.entete nav a:hover, .entete nav a[aria-current='page'] { color: var(--texte); background: var(--survol); }
+
+.pied { border-top: 1px solid var(--trait); }
+.pied p { max-width: var(--largeur); margin: 0 auto; padding: var(--e-4); font-size: 12.5px; color: var(--texte-3); }
+@media (max-width: 640px) { .app--onglets .pied { padding-bottom: 84px; } }
+
+/* ---------- Accueil ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: var(--e-7); align-items: center; }
+.hero__texte { display: flex; flex-direction: column; align-items: flex-start; gap: var(--e-4); }
+.hero__texte h1 { margin-top: var(--e-2); }
+.hero__intro { font-size: 17px; color: var(--texte-2); max-width: 54ch; }
+.hero__intro strong { color: var(--texte); font-weight: 600; }
+.hero__prenom { width: 100%; max-width: 320px; margin-top: var(--e-2); }
+.hero__arc { padding: var(--e-5) var(--e-5) var(--e-4); }
+.hero__arc .legende { justify-content: center; margin-top: var(--e-3); }
+.hero__kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e-4); margin-top: var(--e-5); padding-top: var(--e-4); border-top: 1px solid var(--trait); }
+
+.espaces { margin-top: var(--e-8); }
+.espaces__tete { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--e-4); margin-bottom: var(--e-5); flex-wrap: wrap; }
+.espaces__tete h2 { margin-top: 6px; }
+.espaces__grille { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: var(--e-3); }
+
+.espace-carte {
+  position: relative;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--e-4);
+  padding: var(--e-4) var(--e-5);
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+  background: var(--panneau);
+  color: var(--texte);
+  transition: border-color var(--anim), background var(--anim), transform var(--anim);
+}
+.espace-carte:hover, .espace-carte:focus-visible { border-color: rgba(56, 212, 224, .45); background: linear-gradient(180deg, rgba(56, 212, 224, .07), var(--panneau)); transform: translateY(-2px); }
+.espace-carte__icone {
+  width: 46px; height: 46px; display: grid; place-items: center;
+  border-radius: 12px; border: 1px solid var(--trait-fort);
+  background: var(--nuit-2); color: var(--reseau);
+}
+.espace-carte__texte { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.espace-carte__nom { font-size: 18px; font-weight: 600; letter-spacing: -.015em; }
+.espace-carte__nom span { color: var(--texte-3); font-weight: 450; }
+.espace-carte__accroche { font-size: 13.5px; color: var(--texte-2); }
+.espace-carte__fleche { color: var(--texte-3); transition: color var(--anim), transform var(--anim); }
+.espace-carte:hover .espace-carte__fleche { color: var(--reseau); transform: translateX(3px); }
+
+.espace-carte--vitrine {
+  grid-row: span 3;
+  grid-template-columns: 1fr; align-content: space-between; align-items: start;
+  padding: var(--e-5);
+  background:
+    radial-gradient(420px 220px at 70% 0%, rgba(56, 212, 224, .1), transparent 70%),
+    linear-gradient(180deg, rgba(14, 30, 52, .95), var(--panneau));
+  min-height: 330px;
+}
+.espace-carte--vitrine .espace-carte__nom { font-size: 24px; }
+.espace-carte--vitrine .espace-carte__accroche { font-size: 15px; max-width: 44ch; }
+.vitrine__haut { display: flex; align-items: center; justify-content: space-between; gap: var(--e-3); }
+.vitrine__bas { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--e-4); }
+.vitrine__illu { width: 100%; height: auto; margin: var(--e-3) 0; }
+
+/* ---------- Espace ---------- */
+.espace__retour { display: inline-flex; align-items: center; gap: 6px; color: var(--texte-2); font-size: 14px; margin-bottom: var(--e-5); }
+.espace__retour:hover { color: var(--reseau); }
+.espace__tete { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--e-4); flex-wrap: wrap; margin-bottom: var(--e-5); }
+.espace__identite { display: flex; align-items: center; gap: var(--e-4); }
+.espace__identite .espace-carte__icone { width: 56px; height: 56px; border-radius: 14px; }
+.espace__identite h1 { font-size: clamp(28px, 4vw, 42px); margin-top: 4px; }
+.espace__identite p:last-child { color: var(--texte-2); margin-top: 4px; }
+.espace__contexte { display: flex; gap: var(--e-2); flex-wrap: wrap; align-items: center; }
+.espace__contenu { margin-top: var(--e-5); display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--e-4); }
+.espace__kpis { display: grid; gap: var(--e-4); align-content: start; }
+.espace__kpis .panneau { display: grid; gap: var(--e-5); }
+.a-venir { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--e-3); padding: var(--e-7) var(--e-4); color: var(--texte-2); }
+.a-venir svg { color: var(--reseau); opacity: .8; }
+
+/* ---------- Offres ---------- */
+.offres__tete { max-width: 640px; display: flex; flex-direction: column; gap: var(--e-3); margin-bottom: var(--e-6); }
+.offres__tete p:last-child { color: var(--texte-2); font-size: 16px; }
+.offres { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--e-3); }
+.offre { display: flex; flex-direction: column; gap: var(--e-4); }
+.offre__prix { font-size: 34px; font-weight: 500; }
+.offre__prix small { font-size: 14px; color: var(--texte-3); margin-left: 4px; font-family: var(--f-texte); letter-spacing: 0; }
+.offre ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 9px; font-size: 14px; color: var(--texte-2); }
+.offre li { display: flex; gap: 9px; }
+.offre li::before { content: ""; width: 5px; height: 5px; margin-top: 8px; border-radius: 50%; background: var(--reseau); flex-shrink: 0; }
+.offre--phare { border-color: rgba(56, 212, 224, .5); box-shadow: 0 0 0 1px rgba(56, 212, 224, .15), 0 24px 60px -30px rgba(56, 212, 224, .35); }
+.offres__note { margin-top: var(--e-5); color: var(--texte-3); font-size: 13px; }
+
+/* ---------- Adaptation aux écrans ---------- */
+@media (max-width: 980px) {
+  .hero, .espace__contenu { grid-template-columns: minmax(0, 1fr); gap: var(--e-5); }
+  .espaces__grille { grid-template-columns: minmax(0, 1fr); }
+  .espace-carte--vitrine { grid-row: auto; order: 4; min-height: 0; }
+  .offres { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .page { padding-top: var(--e-5); }
+  .hero__kpis { grid-template-columns: minmax(0, 1fr); gap: var(--e-3); }
+  .espace-carte { padding: var(--e-4); gap: var(--e-3); }
+  .offres { grid-template-columns: minmax(0, 1fr); }
+  .hero__arc, .panneau { padding: var(--e-4); }
+}
+.espace__onglet-vide { margin-top: var(--e-5); }
