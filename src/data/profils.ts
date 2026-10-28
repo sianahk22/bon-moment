@@ -1,7 +1,7 @@
 import type { NomIcone } from '../ui/Icone'
 import type { UserId } from './appareils'
 
-// Les 4 profils de démonstration proposés sur l'écran d'accueil.
+// Les 4 profils de démonstration.
 export type ProfilId = 'gratuit' | 'premium' | 'entreprise' | 'ville'
 
 export interface Onglet {
@@ -11,14 +11,16 @@ export interface Onglet {
 
 export interface Profil {
   id: ProfilId
+  type: string // ce que l'utilisateur choisit à l'ouverture
   espace: string
   offre: string
+  detail: string // ce qui distingue ce profil
   persona: string
   description: string
-  accroche: string
   icone: NomIcone
   userId?: UserId // profil du moteur (aucun pour la Ville : elle regarde tout le quartier)
   onglets: Onglet[]
+  ongletInitial: number
 }
 
 const MOMENTS: Onglet = { nom: 'Moments', icone: 'moments' }
@@ -28,46 +30,54 @@ const BILAN: Onglet = { nom: 'Bilan', icone: 'bilan' }
 export const PROFILS: Profil[] = [
   {
     id: 'gratuit',
+    type: 'Particulier',
     espace: 'Habitant',
     offre: 'Gratuit',
+    detail: 'Rappels au bon moment · 2 appareils connectés maximum',
     persona: 'Anaïs',
-    description: 'Habitante sans voiture électrique',
-    accroche: 'Les meilleurs moments du jour, et un rappel quand c\'est le bon.',
+    description: 'sans voiture électrique',
     icone: 'maison',
     userId: 'anais',
     onglets: [MOMENTS, PLANNING, { nom: 'Appareils', icone: 'appareils' }, BILAN],
+    ongletInitial: 1,
   },
   {
     id: 'premium',
+    type: 'Particulier connecté',
     espace: 'Habitant',
-    offre: 'Premium',
+    offre: 'Premium · 3,99 €',
+    detail: 'Pilotage automatique · appareils connectés illimités',
     persona: 'Inès',
-    description: 'Voiture électrique et borne',
-    accroche: 'La voiture se recharge toute seule, au soleil du quartier.',
+    description: 'voiture électrique et borne',
     icone: 'voiture',
     userId: 'ines',
     onglets: [MOMENTS, PLANNING, { nom: 'Appareils', icone: 'appareils' }, BILAN],
+    ongletInitial: 1,
   },
   {
     id: 'entreprise',
+    type: 'Entreprise',
     espace: 'Entreprise',
-    offre: 'Pro',
+    offre: 'Pro · sur devis',
+    detail: 'Équipements professionnels et contraintes métier',
     persona: 'Lily',
     description: 'Boulangerie de Lily',
-    accroche: 'Fours, chambre froide et livraisons, prêts pour l\'ouverture à 4 h.',
     icone: 'boutique',
     userId: 'lily',
     onglets: [MOMENTS, PLANNING, { nom: 'Équipements', icone: 'equipements' }, BILAN],
+    ongletInitial: 1,
   },
   {
     id: 'ville',
+    type: 'Collectivité',
     espace: 'Ville',
-    offre: 'Collectivité',
+    offre: 'Licence annuelle',
+    detail: 'Jumeau numérique 3D du quartier et coordination',
     persona: 'Sophie',
     description: 'Mairie de Montreuil',
-    accroche: 'Le jumeau numérique du quartier : chaque voisin au bon moment, ensemble.',
     icone: 'mairie',
     onglets: [MOMENTS, { nom: 'Ville 3D', icone: 'ville3d' }, { nom: 'Équipements', icone: 'equipements' }, BILAN],
+    ongletInitial: 1,
   },
 ]
 

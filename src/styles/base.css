@@ -1,4 +1,4 @@
-/* Base : fond « centre de contrôle », typographie, éléments HTML. */
+/* Base : typographie et éléments HTML. */
 *, *::before, *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
@@ -7,55 +7,31 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: var(--f-texte);
-  font-size: 15px;
-  line-height: 1.55;
+  font-size: 14.5px;
+  line-height: 1.5;
   color: var(--texte);
-  background:
-    radial-gradient(1100px 560px at 50% -12%, rgba(32, 92, 150, .38), transparent 70%),
-    radial-gradient(700px 420px at 92% 18%, rgba(56, 212, 224, .07), transparent 70%),
-    var(--nuit-0);
-  background-attachment: fixed;
+  background: var(--fond);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Trame de plan de ville, très discrète, qui s'estompe vers le bas */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(var(--grille) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grille) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, #000 30%, transparent 85%);
-  z-index: -1;
-}
-
-h1, h2, h3 { margin: 0; line-height: 1.08; letter-spacing: -.025em; font-weight: 650; text-wrap: balance; }
-h1 { font-size: clamp(30px, 5vw, 54px); }
-h2 { font-size: clamp(20px, 2.4vw, 26px); }
-h3 { font-size: 17px; letter-spacing: -.01em; }
+h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -.02em; font-weight: 650; text-wrap: balance; }
+h1 { font-size: 22px; }
+h2 { font-size: 15px; letter-spacing: -.01em; }
 p { margin: 0; }
-a { color: var(--reseau); text-decoration: none; }
+a { color: var(--reseau-texte); text-decoration: none; }
 button, input, select { font: inherit; color: inherit; }
-:focus-visible { outline: 2px solid var(--reseau); outline-offset: 3px; border-radius: 6px; }
-::selection { background: var(--reseau-doux); }
+:focus-visible { outline: 2px solid var(--reseau); outline-offset: 2px; border-radius: 6px; }
 
 .chiffre { font-family: var(--f-chiffres); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 .surtitre {
   font-family: var(--f-chiffres);
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: .12em;
+  letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--texte-3);
 }
 .texte-2 { color: var(--texte-2); }
-.soleil { color: var(--soleil); }
-.reseau { color: var(--reseau); }
-.bon { color: var(--bon); }
-.eviter { color: var(--eviter); }
 
 .visuellement-cache {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

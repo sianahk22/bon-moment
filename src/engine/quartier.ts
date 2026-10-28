@@ -13,7 +13,7 @@ export interface SimParams {
 export const PARAMS_DEFAUT: SimParams = { scenario: 'ete', cloud: false, w: .35, sim: { ecole: true, boulangerie: true, parking: false } }
 
 // Quartier : 30 foyers simulés (tirage déterministe)
-function rng(a: number) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296 } }
+export function rng(a: number) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296 } }
 export const QTASKS: (Tache & { habit: number })[] = (() => {
   const r = rng(42), out: (Tache & { habit: number })[] = []
   for (let f = 0; f < 30; f++) {

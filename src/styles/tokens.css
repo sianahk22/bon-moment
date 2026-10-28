@@ -1,48 +1,48 @@
-/* Jetons du système visuel « Le Bon Moment » : couleurs, polices, espacements.
+/* Jetons du système visuel « Le Bon Moment » — thème clair.
    Règle : ambre = soleil, cyan = réseau, vert = bon moment, rouge = à éviter. Aucun autre accent. */
 :root {
-  /* Fonds (bleu nuit) */
-  --nuit-0: #040a14;
-  --nuit-1: #07111f;
-  --nuit-2: #0b1829;
-  --panneau: rgba(9, 21, 38, .82);
-  --panneau-flottant: rgba(7, 17, 31, .72);
-  --survol: rgba(56, 212, 224, .06);
+  /* Fonds */
+  --fond: #e9eff0;
+  --surface: #ffffff;
+  --surface-2: #f2f6f6;
+  --panneau-flottant: rgba(255, 255, 255, .88);
+  --survol: rgba(10, 124, 135, .07);
 
   /* Traits */
-  --trait: rgba(140, 200, 230, .13);
-  --trait-fort: rgba(140, 210, 240, .28);
-  --grille: rgba(110, 180, 220, .045);
+  --trait: #d6e0de;
+  --trait-fort: #b9c8c6;
 
-  /* Textes (contraste élevé sur fond sombre) */
-  --texte: #eef4f9;
-  --texte-2: #b6c6d6;
-  --texte-3: #8a9fb4;
+  /* Textes (contraste élevé) */
+  --texte: #13222b;
+  --texte-2: #44565f;
+  --texte-3: #5d6f77;
 
-  /* Couleurs repères */
-  --soleil: #ffbe3d;
-  --soleil-doux: rgba(255, 190, 61, .13);
-  --soleil-lueur: rgba(255, 190, 61, .45);
-  --reseau: #38d4e0;
-  --reseau-doux: rgba(56, 212, 224, .12);
-  --reseau-lueur: rgba(56, 212, 224, .4);
-  --bon: #47d98a;
-  --bon-doux: rgba(71, 217, 138, .13);
-  --eviter: #ff6a5c;
-  --eviter-doux: rgba(255, 106, 92, .13);
-  --neutre-point: rgba(182, 198, 214, .22);
+  /* Couleurs repères : la version « -texte » sert pour écrire, la version pleine pour remplir */
+  --soleil: #f2a900;
+  --soleil-texte: #8a5a00;
+  --soleil-doux: #fdf0cc;
+  --reseau: #0a8f9c;
+  --reseau-texte: #077480;
+  --reseau-doux: #d9f1f3;
+  --bon: #1d8f5a;
+  --bon-doux: #daf2e5;
+  --eviter: #c9443b;
+  --eviter-doux: #fbe2df;
 
   /* Polices */
   --f-texte: 'Instrument Sans Variable', 'Segoe UI', system-ui, sans-serif;
   --f-chiffres: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 
-  /* Espacements, rayons, durées */
-  --e-1: 4px; --e-2: 8px; --e-3: 12px; --e-4: 16px; --e-5: 24px; --e-6: 32px; --e-7: 48px; --e-8: 72px;
-  --rayon: 16px;
+  /* Espacements, rayons, ombres, durées */
+  --e-1: 4px; --e-2: 8px; --e-3: 12px; --e-4: 16px; --e-5: 24px; --e-6: 32px; --e-7: 48px;
+  --rayon: 14px;
   --rayon-s: 10px;
   --rayon-pilule: 999px;
-  --largeur: 1240px;
-  --anim: 220ms cubic-bezier(.2, .7, .2, 1);
+  --ombre: 0 1px 2px rgba(19, 34, 43, .05), 0 8px 24px -12px rgba(19, 34, 43, .18);
+  --ombre-flottante: 0 2px 6px rgba(19, 34, 43, .06), 0 18px 40px -18px rgba(19, 34, 43, .35);
+  --haut-barre: 58px;
+  --large-barre: 76px;
+  --anim: 200ms cubic-bezier(.2, .7, .2, 1);
 
-  color-scheme: dark;
+  color-scheme: light;
 }
