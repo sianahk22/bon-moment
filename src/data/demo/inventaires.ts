@@ -73,3 +73,14 @@ export function consommationFixe(userId: UserId, base: number, variation = 1): n
   })
 }
 export const AVEC_FOND: UserId[] = ['lily']
+
+// Appareils que l'on peut ajouter depuis l'écran Appareils (données de démonstration).
+export type ModeleAppareil = Omit<Appareil, 'id' | 'connecte' | 'auto'>
+export const CATALOGUE: ModeleAppareil[] = [
+  { nom: 'Sèche-linge', detail: 'Pompe à chaleur', icone: 'secheLinge', puissance: 1, type: 'secheLinge' },
+  { nom: 'Bouilloire', detail: 'Thé et café', icone: 'eau', puissance: 2, profil: h => .05 * bump(h, 7.5, .4) + .04 * bump(h, 16, .5) },
+  { nom: 'Micro-ondes', detail: 'Réchauffage des repas', icone: 'four', puissance: .9, profil: h => .04 * bump(h, 12.5, .4) + .05 * bump(h, 19.5, .4) },
+  { nom: 'Aspirateur robot', detail: 'Station de charge', icone: 'appareils', puissance: .03, profil: () => .02 },
+  { nom: 'Console de jeux', detail: 'Le soir et le week-end', icone: 'ecran', puissance: .15, profil: h => .08 * bump(h, 21, 1.5) },
+  { nom: 'Radiateur d\'appoint', detail: 'Salle de bain', icone: 'radiateur', puissance: 2, profil: h => .3 * bump(h, 7.5, .6) },
+]

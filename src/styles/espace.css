@@ -293,3 +293,13 @@
 .bulle__titre { display: block; margin-top: 6px; font-size: 14.5px; }
 .bulle__texte { font-size: 13.5px; color: var(--texte); line-height: 1.4; }
 .telephone figcaption { font-size: 12px; color: var(--texte-3); text-align: center; }
+
+/* Point 6 : bouton Premium et ajout d'un appareil */
+.btn--petit { padding: 7px 12px; font-size: 13px; border-radius: 10px; }
+.kpi__action { margin-top: 10px; }
+.coque--foyer .ecran__kpis > .panneau .kpi__action { padding-left: 52px; }
+.offre-premium__actions { display: flex; gap: var(--e-2); flex-wrap: wrap; }
+.ajout-appareil { display: grid; grid-template-columns: minmax(220px, 320px) minmax(0, 1fr) auto; gap: var(--e-4); align-items: end; margin-bottom: var(--e-4); padding: var(--e-4); border-radius: 14px; background: var(--soleil-doux); }
+.ajout-appareil p { font-size: 13px; padding-bottom: 10px; }
+.mode--nouveau { color: var(--soleil-texte); background: var(--soleil-doux); }
+@media (max-width: 720px) { .ajout-appareil { grid-template-columns: minmax(0, 1fr); } .coque--foyer .ecran__kpis > .panneau .kpi__action { padding-left: 0; } }

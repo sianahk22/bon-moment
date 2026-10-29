@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { USERS, mkTask, type DeviceId, type UserId } from '../data/appareils'
-import { AVEC_FOND, INVENTAIRES, LIMITE_GRATUIT, consommationFixe, historiqueDe, historiqueQuartier, jourCalendrier, type Appareil, type JourCalendrier } from '../data/demo'
+import { AVEC_FOND, INVENTAIRES, LIMITE_GRATUIT, type ModeleAppareil, consommationFixe, historiqueDe, historiqueQuartier, jourCalendrier, type Appareil, type JourCalendrier } from '../data/demo'
 import {
   alternatives, calculerFoyer, evaluate, qualiteCreneaux, slotCtx,
   type Foyer, type Qualite, type ResultatFoyer, type SlotCtx, type TacheFoyer,
@@ -81,8 +81,16 @@ export function useFoyer(userId: UserId, gratuit: boolean) {
     setAppareils(liste => liste.map(x => x.id !== id ? x : { ...x, auto: active, connecte: gratuit ? active : true }))
   }
 
+  // Ajout d'un appareil depuis le catalogue. Offre Gratuite : au-delà de 2 appareils connectés, il reste en mode rappel.
+  function ajouterAppareil(modele: ModeleAppareil) {
+    const pilotable = !!modele.type
+    const connecte = pilotable && (!gratuit || connectes < LIMITE_GRATUIT)
+    if (pilotable && !connecte) setLimiteAtteinte(true)
+    setAppareils(liste => [...liste, { ...modele, id: `ajout-${liste.length}-${modele.nom}`, connecte, auto: connecte }])
+  }
+
   return {
-    u, appareils, connectes, limiteAtteinte, setLimiteAtteinte, basculerAuto,
+    u, appareils, connectes, limiteAtteinte, setLimiteAtteinte, basculerAuto, ajouterAppareil,
     taches, aujourdhui, semaine, historique, quartier, valides, economieAnnuelle,
     ajouter: (type: DeviceId, echeanceH: number) => setTaches(l => [...l, mkTask(type, echeanceH)]),
     retirer: (id: number) => setTaches(l => l.filter(t => t.id !== id)),
