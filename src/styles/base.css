@@ -14,7 +14,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -.02em; font-weight: 650; text-wrap: balance; }
+h1, h2, h3 { margin: 0; font-family: var(--f-titre); line-height: 1.15; letter-spacing: -.02em; font-weight: 650; text-wrap: balance; }
 h1 { font-size: 22px; }
 h2 { font-size: 15px; letter-spacing: -.01em; }
 p { margin: 0; }

@@ -30,6 +30,7 @@
   --eviter-doux: #fbe2df;
 
   /* Polices */
+  --f-titre: 'Bricolage Grotesque Variable', 'Instrument Sans Variable', system-ui, sans-serif;
   --f-texte: 'Instrument Sans Variable', 'Segoe UI', system-ui, sans-serif;
   --f-chiffres: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 

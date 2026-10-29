@@ -1,49 +1,52 @@
 import { useState } from 'react'
-import { formatJour, nomJour } from '../data/demo'
-import { SLOTS, euro, evaluate, label, rangeText, ranges } from '../engine'
+import { nomJour } from '../data/demo'
+import { euro, evaluate, label, rangeText } from '../engine'
 import Icone from '../ui/Icone'
 import { TempoPuce } from './commun'
 import { cle, type EtatFoyer, type JourPlanifie } from './useFoyer'
 
-// Calendrier de la semaine : chaque colonne est une journée de 8h à 8h, chaque bloc un appareil programmé.
+// La semaine : une colonne par jour, chaque appareil avec son heure de départ.
+// On touche un appareil pour valider son créneau ou en choisir un autre.
 export default function CalendrierSemaine({ foyer }: { foyer: EtatFoyer }) {
   const [choisi, setChoisi] = useState<{ d: number; k: number } | null>({ d: 1, k: 0 })
   const jourChoisi = choisi ? foyer.semaine[choisi.d] : null
 
   return (
-    <div className="semaine">
-      <div className="semaine__grille">
-        <div className="semaine__heures" aria-hidden="true">
-          {[0, 12, 24, 36].map(i => <span key={i} style={{ top: `${(i / SLOTS) * 100}%` }}>{label(i)}</span>)}
-        </div>
-        {foyer.semaine.map((j, d) => (
-          <div key={d} className="semaine__jour">
-            <div className="semaine__tete">
-              <b>{nomJour(j.cal.decalage, j.cal.date)}</b>
-              <TempoPuce tempo={j.cal.tempo} nuage={j.cal.nuage} />
+    <div className="sem">
+      <div className="sem__jours">
+        {foyer.semaine.map((j, d) => {
+          const lignes = j.taches.map((t, k) => ({ t, k, debut: Math.min(...j.reel[k]) })).sort((a, b) => a.debut - b.debut)
+          return (
+            <div key={d} className={`sem__jour ${d === 0 ? 'sem__jour--auj' : ''}`}>
+              <div className="sem__tete">
+                <b>{nomJour(j.cal.decalage, j.cal.date)}</b>
+                <TempoPuce tempo={j.cal.tempo} nuage={j.cal.nuage} />
+              </div>
+              <ul>
+                {lignes.map(({ t, k, debut }) => {
+                  const valide = foyer.valides[cle(j.cal.decalage, t, k)]
+                  const actif = choisi?.d === d && choisi.k === k
+                  const icone = foyer.appareils.find(a => a.type === t.type)?.icone ?? 'appareils'
+                  return (
+                    <li key={`${t.id}-${k}`}>
+                      <button
+                        type="button"
+                        className={`sem__item ${t.auto ? 'sem__item--auto' : 'sem__item--rappel'} ${actif ? 'sem__item--actif' : ''}`}
+                        title={`${t.name} · ${rangeText(j.reel[k])}`}
+                        aria-label={`${t.name}, ${rangeText(j.reel[k])}${valide ? ', validé' : ''}`}
+                        onClick={() => setChoisi({ d, k })}
+                      >
+                        <Icone nom={icone} taille={15} />
+                        <span className="chiffre">{label(debut)}</span>
+                        {valide && <Icone nom="coche" taille={13} className="sem__valide" />}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
             </div>
-            <div className="semaine__corps">
-              {[12, 24, 36].map(i => <i key={i} className="semaine__ligne" style={{ top: `${(i / SLOTS) * 100}%` }} />)}
-              {j.taches.map((t, k) => ranges(j.reel[k]).map(([a, b]) => {
-                const valide = foyer.valides[cle(j.cal.decalage, t, k)]
-                const actif = choisi?.d === d && choisi.k === k
-                return (
-                  <button
-                    key={`${t.id}-${k}-${a}`}
-                    type="button"
-                    className={`bloc ${t.auto ? 'bloc--auto' : 'bloc--rappel'} ${valide ? 'bloc--valide' : ''} ${actif ? 'bloc--actif' : ''}`}
-                    style={{ top: `${(a / SLOTS) * 100}%`, height: `${((b - a + 1) / SLOTS) * 100}%`, left: `${(k / j.taches.length) * 100}%`, width: `${100 / j.taches.length}%` }}
-                    title={`${t.name} · ${rangeText(j.reel[k])}`}
-                    aria-label={`${t.name}, ${formatJour(j.cal.date)}, ${rangeText(j.reel[k])}${valide ? ', validé' : ''}`}
-                    onClick={() => setChoisi({ d, k })}
-                  >
-                    {valide && <Icone nom="coche" taille={12} />}
-                  </button>
-                )
-              }))}
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {choisi && jourChoisi && jourChoisi.taches[choisi.k] && <Detail foyer={foyer} jour={jourChoisi} k={choisi.k} />}

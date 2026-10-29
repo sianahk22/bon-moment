@@ -1,0 +1,111 @@
+/* Habillage « smart city » des espaces Particulier, Particulier connecté et Entreprise.
+   Uniquement visuel : verre dépoli, ciel clair, silhouette de ville, chiffres clés regroupés. */
+
+.coque--fond {
+  position: relative;
+  background:
+    radial-gradient(900px 420px at 85% -10%, rgba(255, 214, 120, .28), transparent 70%),
+    radial-gradient(800px 500px at 10% 0%, rgba(56, 212, 224, .12), transparent 70%),
+    linear-gradient(180deg, #eaf3f7 0%, #f3f6f2 55%, #f6f3ec 100%);
+}
+.coque__decor { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; pointer-events: none; z-index: 0; }
+.coque__decor svg { width: 100%; height: 100%; display: block; }
+.coque--fond > * { position: relative; z-index: 1; }
+.coque--fond > .coque__decor { position: absolute; z-index: 0; }
+.coque--fond .zone { background: transparent; }
+
+/* Barres en verre */
+.coque--foyer .barre-haut,
+.coque--foyer .barre-laterale {
+  background: rgba(255, 255, 255, .62);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border-color: rgba(255, 255, 255, .8);
+}
+.coque--foyer .barre-laterale { padding-top: var(--e-4); gap: 6px; }
+.coque--foyer .barre-laterale button { border-radius: 14px; padding: 11px 2px; }
+.coque--foyer .barre-laterale button[aria-selected='true'] {
+  color: #fff;
+  background: linear-gradient(160deg, #13a5b3, #077480);
+  box-shadow: 0 8px 18px -8px rgba(7, 116, 128, .7);
+}
+.coque--foyer .segments { background: rgba(255, 255, 255, .55); border-color: rgba(255, 255, 255, .9); }
+.coque--foyer .zone { background: transparent; }
+.coque--foyer .ecran { padding: var(--e-5); gap: var(--e-5); }
+
+/* Panneaux en verre dépoli, plus aérés */
+.coque--foyer .panneau {
+  background: rgba(255, 255, 255, .78);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, .95);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 1px 2px rgba(19, 34, 43, .04), 0 16px 40px -24px rgba(19, 34, 43, .3);
+}
+.coque--foyer .panneau__titre { font-family: var(--f-titre); font-size: 16px; font-weight: 650; letter-spacing: -.015em; }
+.coque--foyer .panneau__titre svg { width: 28px; height: 28px; padding: 6px; border-radius: 9px; background: var(--reseau-doux); }
+
+/* Chiffres clés : une seule barre, chaque chiffre avec son icône */
+.coque--foyer .ecran__kpis {
+  gap: 0;
+  background: rgba(255, 255, 255, .78);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, .95);
+  border-radius: 20px;
+  box-shadow: 0 1px 2px rgba(19, 34, 43, .04), 0 16px 40px -24px rgba(19, 34, 43, .3);
+}
+.coque--foyer .ecran__kpis > .panneau {
+  background: none; border: 0; box-shadow: none; border-radius: 0;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  padding: 18px 20px;
+}
+.coque--foyer .ecran__kpis > .panneau + .panneau { border-left: 1px solid rgba(19, 34, 43, .08); }
+.coque--foyer .kpi--icone { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; align-items: center; }
+.coque--foyer .kpi--icone > :not(.kpi__icone) { grid-column: 2; }
+.coque--foyer .kpi__icone {
+  grid-row: 1 / span 3; align-self: start;
+  width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px;
+  background: var(--surface-2); color: var(--texte-2);
+}
+.coque--foyer .kpi--bon .kpi__icone { background: var(--bon-doux); color: var(--bon); }
+.coque--foyer .kpi--soleil .kpi__icone { background: var(--soleil-doux); color: var(--soleil-texte); }
+.coque--foyer .kpi--reseau .kpi__icone { background: var(--reseau-doux); color: var(--reseau-texte); }
+.coque--foyer .kpi--eviter .kpi__icone { background: var(--eviter-doux); color: var(--eviter); }
+.coque--foyer .kpi__valeur { font-size: 28px; }
+.coque--foyer .kpi--soleil .kpi__valeur { text-shadow: 0 0 18px rgba(242, 169, 0, .35); }
+
+/* Listes plus légères : plus d'air, moins de cadres */
+.coque--foyer .besoin,
+.coque--foyer .moment,
+.coque--foyer .simulateur__choix { background: rgba(242, 246, 246, .7); border: 1px solid rgba(255, 255, 255, .9); border-radius: 14px; transition: background var(--anim), transform var(--anim); }
+.coque--foyer .besoin:hover,
+.coque--foyer .moment:hover { background: #fff; transform: translateY(-1px); }
+.coque--foyer .besoin__icone { border-radius: 12px; border: 0; background: var(--reseau-doux); }
+.coque--foyer .notif { background: rgba(242, 246, 246, .7); border-radius: 12px; }
+
+/* Ligne du temps : barres arrondies et lumineuses */
+.coque--foyer .timeline .t-auto { filter: drop-shadow(0 2px 6px rgba(10, 143, 156, .45)); }
+.coque--foyer .timeline .t-rappel { filter: drop-shadow(0 2px 6px rgba(242, 169, 0, .45)); }
+.coque--foyer .timeline .t-soleil { fill: rgba(255, 214, 120, .35); }
+.coque--foyer .semaine__detail { background: rgba(255, 255, 255, .7); border-radius: 14px; }
+
+/* Graphiques : barres en dégradé */
+.coque--foyer .gj-barre { opacity: .9; }
+.coque--foyer .gj-barre:hover { opacity: 1; }
+
+@media (max-width: 1100px) {
+  .coque--foyer .ecran__kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .coque--foyer .ecran__kpis > .panneau:nth-child(odd) { border-left: 0; }
+  .coque--foyer .ecran__kpis > .panneau:nth-child(n + 3) { border-top: 1px solid rgba(19, 34, 43, .08); }
+}
+@media (max-width: 720px) {
+  .coque--foyer .ecran { padding: var(--e-3); gap: var(--e-3); }
+  .coque--foyer .ecran__kpis > .panneau { padding: 14px; }
+  .coque--foyer .kpi--icone { grid-template-columns: minmax(0, 1fr); }
+  .coque--foyer .kpi--icone > :not(.kpi__icone) { grid-column: 1; }
+  .coque--foyer .kpi__icone { grid-row: auto; width: 32px; height: 32px; margin-bottom: 4px; }
+  .coque--foyer .kpi__valeur { font-size: 21px; }
+  .coque--foyer .panneau { padding: 14px; }
+}

@@ -24,15 +24,17 @@ export function Panneau({ titre, icone, action, flottant, className = '', childr
 }
 
 // Chiffre clé : grand nombre en police mono, petit libellé, explication courte.
-export function Kpi({ libelle, valeur, unite, note, ton }: {
+export function Kpi({ libelle, valeur, unite, note, ton, icone }: {
   libelle: string
   valeur: string
   unite?: string
   note?: string
   ton?: 'soleil' | 'reseau' | 'bon' | 'eviter'
+  icone?: NomIcone
 }) {
   return (
-    <div className={`kpi ${ton ? `kpi--${ton}` : ''}`}>
+    <div className={`kpi ${ton ? `kpi--${ton}` : ''} ${icone ? 'kpi--icone' : ''}`}>
+      {icone && <span className="kpi__icone" aria-hidden="true"><Icone nom={icone} taille={18} /></span>}
       <span className="surtitre">{libelle}</span>
       <span className="kpi__valeur chiffre">{valeur}{unite && <small>{unite}</small>}</span>
       {note && <span className="kpi__note">{note}</span>}

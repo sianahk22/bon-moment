@@ -1,0 +1,91 @@
+/* Écran d'ouverture : la ville de demain en fond, cartes tactiles par-dessus. */
+
+.accueil { position: relative; min-height: calc(100dvh - 34px); overflow: hidden; background: #eef3ee; }
+
+/* Illustration plein écran, calée en bas à droite */
+.ville-fr { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* Voile clair à gauche pour garder le texte parfaitement lisible */
+.accueil__voile {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(247, 249, 246, .97) 0%, rgba(247, 249, 246, .9) 34%, rgba(247, 249, 246, .25) 58%, rgba(247, 249, 246, 0) 72%);
+}
+
+.accueil__contenu { position: relative; z-index: 1; min-height: inherit; display: flex; flex-direction: column; padding: var(--e-5) clamp(16px, 4vw, 56px) var(--e-6); }
+.accueil__tete { display: flex; align-items: center; justify-content: space-between; gap: var(--e-3); }
+.accueil__tete .marque { font-family: var(--f-titre); font-size: 18px; }
+.accueil__corps { margin: auto 0; padding-top: var(--e-6); max-width: 720px; }
+
+.accueil__lieu { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: var(--rayon-pilule); background: rgba(255, 255, 255, .8); border: 1px solid var(--trait); font-size: 13px; font-weight: 600; color: var(--texte-2); }
+.accueil__lieu svg { color: var(--soleil-texte); }
+.accueil__question {
+  margin-top: var(--e-4);
+  font-size: clamp(44px, 6.4vw, 84px);
+  font-weight: 750;
+  letter-spacing: -.045em;
+  line-height: .95;
+  font-variation-settings: 'opsz' 96;
+}
+.accueil__aide { margin-top: var(--e-3); font-size: 18px; color: var(--texte-2); }
+
+/* Les 4 cartes : grandes zones tactiles (≥ 160 px), retour visuel au toucher */
+.accueil__cartes { list-style: none; margin: var(--e-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.accueil__cartes li { opacity: 0; animation: carte-entree .5s cubic-bezier(.2, .7, .2, 1) forwards; }
+@keyframes carte-entree { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+.carte-profil {
+  height: 100%; min-height: 176px;
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 18px 18px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .86);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, .95);
+  box-shadow: 0 1px 2px rgba(19, 34, 43, .06), 0 14px 34px -18px rgba(19, 34, 43, .35);
+  color: var(--texte);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 180ms cubic-bezier(.2, .7, .2, 1), box-shadow 180ms, border-color 180ms, background 180ms;
+}
+.carte-profil:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(19, 34, 43, .06), 0 22px 44px -18px rgba(19, 34, 43, .4); border-color: var(--reseau); background: rgba(255, 255, 255, .95); }
+.carte-profil:active { transform: scale(.97); transition-duration: 80ms; }
+.carte-profil:focus-visible { outline: 3px solid var(--reseau); outline-offset: 3px; }
+
+.carte-profil__haut { display: flex; align-items: center; justify-content: space-between; gap: var(--e-2); margin-bottom: 4px; }
+.carte-profil__icone { width: 50px; height: 50px; display: grid; place-items: center; border-radius: 14px; background: var(--reseau-doux); color: var(--reseau-texte); }
+.carte-profil--premium .carte-profil__icone { background: var(--soleil-doux); color: var(--soleil-texte); }
+.carte-profil--ville .carte-profil__icone { background: var(--texte); color: #fff; }
+.carte-profil__offre { font-family: var(--f-chiffres); font-size: 11.5px; font-weight: 500; padding: 4px 9px; border-radius: var(--rayon-pilule); background: var(--surface-2); color: var(--texte-2); white-space: nowrap; }
+.carte-profil__type { font-family: var(--f-titre); font-size: 24px; font-weight: 700; letter-spacing: -.03em; line-height: 1.05; }
+.carte-profil__promesse { font-size: 15px; color: var(--texte-2); }
+.carte-profil__points { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--texte); }
+.carte-profil__points span { display: inline-flex; align-items: center; gap: 5px; }
+.carte-profil__points svg { color: var(--bon); }
+.carte-profil__bas { margin-top: auto; padding-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: var(--e-2); }
+.carte-profil__persona { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--texte-3); }
+.avatar--petit { width: 24px; height: 24px; font-size: 11.5px; }
+.carte-profil__fleche { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; background: var(--texte); color: #fff; transition: transform 180ms cubic-bezier(.2, .7, .2, 1), background 180ms; }
+.carte-profil:hover .carte-profil__fleche { transform: translateX(3px); background: var(--reseau); }
+
+/* Animation unique à l'ouverture : le soleil se lève, le quartier apparaît par couches */
+.vf-soleil { animation: vf-lever 1.4s cubic-bezier(.2, .7, .2, 1) both; }
+.vf-couche { animation: vf-apparaitre .9s cubic-bezier(.2, .7, .2, 1) both; }
+.vf-couche--1 { animation-delay: .05s; }
+.vf-couche--2 { animation-delay: .2s; }
+.vf-couche--3 { animation-delay: .4s; }
+.vf-flux { animation-delay: .9s; }
+@keyframes vf-lever { from { transform: translateY(80px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes vf-apparaitre { from { transform: translateY(18px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* Tablette : la ville reste visible en haut, les cartes dessous */
+@media (max-width: 1100px) {
+  .ville-fr { height: 46vh; bottom: auto; }
+  .accueil__voile { background: linear-gradient(180deg, rgba(247, 249, 246, 0) 0%, rgba(247, 249, 246, 0) 30vh, rgba(247, 249, 246, .97) 46vh); }
+  .accueil__corps { max-width: none; margin: 0; padding-top: 33vh; }
+}
+@media (max-width: 640px) {
+  .accueil__cartes { grid-template-columns: minmax(0, 1fr); }
+  .accueil__corps { padding-top: 31vh; }
+  .carte-profil { min-height: 0; }
+  .accueil__tete .bandeau-demo { display: none; }
+}

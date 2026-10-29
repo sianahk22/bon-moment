@@ -54,24 +54,7 @@
 .ajout__champs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: var(--e-2); }
 .ajout select { padding: 9px 10px; border-radius: var(--rayon-s); border: 1px solid var(--trait-fort); background: var(--surface); min-width: 0; }
 
-/* Calendrier de la semaine */
-.semaine__grille { display: grid; grid-template-columns: 40px repeat(7, minmax(0, 1fr)); gap: 6px; }
-.semaine__heures { position: relative; margin-top: 52px; height: 360px; }
-.semaine__heures span { position: absolute; right: 4px; transform: translateY(-50%); font: 11px var(--f-chiffres); color: var(--texte-3); }
-.semaine__tete { height: 46px; margin-bottom: 6px; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; font-size: 13px; }
-.semaine__tete b { text-transform: capitalize; }
-.semaine__corps { position: relative; height: 360px; border-radius: var(--rayon-s); background: var(--surface-2); border: 1px solid var(--trait); overflow: hidden; }
-.semaine__ligne { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--trait-fort); }
-.bloc {
-  position: absolute; padding: 0; margin: 0 1px; border: 0; border-radius: 4px; cursor: pointer;
-  display: grid; place-items: start center; color: #fff; box-sizing: border-box;
-  transition: top .4s cubic-bezier(.2, .7, .2, 1), height .4s cubic-bezier(.2, .7, .2, 1), box-shadow var(--anim);
-}
-.bloc svg { margin-top: 3px; }
-.bloc--auto { background: var(--reseau); opacity: .55; }
-.bloc--rappel { background: var(--soleil); opacity: .6; }
-.bloc--valide { opacity: 1; }
-.bloc--actif { opacity: 1; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--texte); z-index: 2; }
+/* Calendrier de la semaine : détail du créneau choisi */
 .semaine__detail { margin-top: var(--e-4); padding: var(--e-3) var(--e-4); border-radius: var(--rayon-s); background: var(--surface-2); display: flex; align-items: center; justify-content: space-between; gap: var(--e-4); flex-wrap: wrap; }
 .semaine__detail-titre { font-size: 15px; margin: 2px 0; }
 .semaine__actions { display: flex; gap: var(--e-2); flex-wrap: wrap; }
@@ -128,11 +111,15 @@
 @media (max-width: 1100px) {
   .ecran__principal, .ecran__colonnes { grid-template-columns: minmax(0, 1fr); }
   .historique-resume { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .semaine__grille { overflow-x: auto; grid-template-columns: 40px repeat(7, minmax(90px, 1fr)); }
   .appareils { overflow-x: auto; }
   .appareils__ligne { min-width: 760px; }
 }
 @media (max-width: 720px) {
+  .ecran { padding: var(--e-3); gap: var(--e-3); }
+  .ecran__kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e-2); }
+  .ecran__kpis .panneau { padding: var(--e-3); }
+  .ecran__kpis .kpi__valeur { font-size: 20px; }
+  .historique-resume { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .moment { grid-template-columns: minmax(0, 1fr) auto; }
   .moment__heure { grid-column: 1 / -1; }
   .ajout__champs { grid-template-columns: minmax(0, 1fr); }
@@ -156,3 +143,91 @@
 .tableau-bilan__ligne > span:not(:first-child) { text-align: right; }
 .tableau-bilan__entete { font: 500 11px var(--f-chiffres); letter-spacing: .08em; text-transform: uppercase; color: var(--texte-3); padding-top: 0; }
 @media (max-width: 720px) { .bornes, .ecran__kpis--2 { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Planning de la journée : une ligne par appareil ---------- */
+.ajout-rapide { display: flex; gap: var(--e-2); flex-wrap: wrap; }
+.ajout-rapide select { padding: 9px 10px; border-radius: 12px; border: 1px solid var(--trait-fort); background: var(--surface); font-size: 14px; min-width: 0; }
+
+.pj { display: grid; gap: 6px; }
+.pj__ligne { display: grid; grid-template-columns: 230px minmax(0, 1fr) 96px; gap: var(--e-4); align-items: center; }
+.pj__ligne:not(.pj__ligne--entete) { padding: 8px 0; border-top: 1px solid rgba(19, 34, 43, .06); }
+.pj__gauche { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.pj__icone { width: 38px; height: 38px; flex-shrink: 0; display: grid; place-items: center; border-radius: 12px; }
+.pj__icone--auto { background: var(--reseau-doux); color: var(--reseau-texte); }
+.pj__icone--rappel { background: var(--soleil-doux); color: var(--soleil-texte); }
+.pj__nom { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.pj__nom b { font-size: 14.5px; }
+.pj__nom small { font-size: 12px; color: var(--texte-3); }
+
+/* La piste horaire : zones bon moment / à éviter en fond, barre de l'appareil au-dessus */
+.pj__piste { position: relative; height: 40px; border-radius: 12px; background: rgba(19, 34, 43, .035); overflow: hidden; }
+.pj__piste--entete { height: 44px; background: none; overflow: visible; }
+.pj__zone { position: absolute; top: 0; bottom: 0; }
+.pj__zone--bon { background: rgba(29, 143, 90, .13); }
+.pj__zone--eviter { background: repeating-linear-gradient(135deg, rgba(201, 68, 59, .1) 0 6px, rgba(201, 68, 59, .04) 6px 12px); }
+.pj__barre {
+  position: absolute; top: 7px; bottom: 7px; border-radius: 8px;
+  display: grid; place-items: center; overflow: hidden;
+  color: #fff; font-size: 11.5px; font-weight: 500; white-space: nowrap;
+  transition: left .45s cubic-bezier(.2, .7, .2, 1), width .45s cubic-bezier(.2, .7, .2, 1);
+}
+.pj__barre--auto { background: linear-gradient(180deg, #19b3c1, #0a8f9c); box-shadow: 0 3px 10px -3px rgba(10, 143, 156, .6); }
+.pj__barre--rappel { background: linear-gradient(180deg, #ffc94a, #f2a900); color: #2a1a00; box-shadow: 0 3px 10px -3px rgba(242, 169, 0, .6); }
+.pj__habitude { position: absolute; top: 9px; bottom: 9px; border: 1.5px dashed var(--texte-3); border-radius: 8px; opacity: .7; }
+.pj__echeance { position: absolute; top: 4px; bottom: 4px; width: 0; border-left: 2px solid var(--texte); }
+.pj__echeance::after { content: ""; position: absolute; top: -2px; left: -2px; width: 8px; height: 6px; background: var(--texte); clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.pj__maintenant { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1.5px dashed rgba(19, 34, 43, .35); }
+.pj__soleil { position: absolute; left: 0; right: 0; top: 0; width: 100%; height: 26px; }
+.pj__soleil path { fill: rgba(255, 196, 61, .35); stroke: var(--soleil); stroke-width: .15; }
+.pj__heure { position: absolute; bottom: 0; transform: translateX(-50%); font: 11px var(--f-chiffres); color: var(--texte-3); }
+.pj__heure:first-of-type { transform: none; }
+.pj__heure:last-of-type { transform: translateX(-100%); }
+.pj__droite { display: flex; align-items: center; justify-content: flex-end; gap: 6px; }
+.pj__retirer { width: 30px; height: 30px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--texte-3); cursor: pointer; }
+.pj__retirer:hover { background: var(--eviter-doux); color: var(--eviter); }
+.pj__vide { padding: var(--e-5) 0; text-align: center; color: var(--texte-3); }
+.pj__pied { display: flex; align-items: center; justify-content: space-between; gap: var(--e-3); flex-wrap: wrap; margin-top: var(--e-2); padding-top: var(--e-3); border-top: 1px solid rgba(19, 34, 43, .06); }
+.pj__legende { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--texte-2); }
+.pj__legende::before { content: ""; width: 14px; height: 10px; border-radius: 3px; }
+.pj__legende--bon::before { background: rgba(29, 143, 90, .25); }
+.pj__legende--eviter::before { background: repeating-linear-gradient(135deg, rgba(201, 68, 59, .3) 0 3px, rgba(201, 68, 59, .1) 3px 6px); }
+.pj__legende--auto::before { background: var(--reseau); }
+.pj__legende--rappel::before { background: var(--soleil); }
+.pj__bascule { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--texte-2); cursor: pointer; }
+.pj__bascule input { accent-color: var(--reseau); width: 16px; height: 16px; }
+
+/* ---------- La semaine : une colonne par jour ---------- */
+.sem__jours { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--e-2); }
+.sem__jour { padding: 10px; border-radius: 14px; background: rgba(19, 34, 43, .03); min-width: 0; }
+.sem__jour--auj { background: var(--reseau-doux); }
+.sem__tete { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin-bottom: 10px; font-size: 13px; }
+.sem__tete b { text-transform: capitalize; }
+.sem__jour ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.sem__item {
+  width: 100%; display: flex; align-items: center; gap: 7px;
+  padding: 7px 8px; border-radius: 10px; border: 1px solid transparent;
+  background: #fff; cursor: pointer; font-size: 12.5px; text-align: left;
+  box-shadow: 0 1px 2px rgba(19, 34, 43, .06);
+  transition: border-color var(--anim), transform var(--anim);
+}
+.sem__item:hover { transform: translateY(-1px); }
+.sem__item:active { transform: scale(.97); }
+.sem__item--auto svg:first-child { color: var(--reseau-texte); }
+.sem__item--rappel svg:first-child { color: var(--soleil-texte); }
+.sem__item--actif { border-color: var(--texte); }
+.sem__valide { margin-left: auto; color: var(--bon); }
+
+@media (max-width: 1100px) {
+  .pj__ligne { grid-template-columns: 180px minmax(0, 1fr) 84px; gap: var(--e-3); }
+  .sem__jours { grid-template-columns: repeat(7, minmax(110px, 1fr)); overflow-x: auto; padding-bottom: 4px; }
+}
+@media (max-width: 720px) {
+  .pj__ligne { grid-template-columns: minmax(0, 1fr) auto; row-gap: 6px; }
+  .pj__gauche { grid-column: 1; }
+  .pj__droite { grid-column: 2; grid-row: 1; }
+  .pj__piste { grid-column: 1 / -1; }
+  .pj__ligne--entete .pj__gauche, .pj__ligne--entete .pj__droite { display: none; }
+  .ajout-rapide { width: 100%; }
+  .ajout-rapide select, .ajout-rapide button { flex: 1 1 100%; }
+}
+.pj__creneau { font-size: 12.5px; font-weight: 500; color: var(--bon); }

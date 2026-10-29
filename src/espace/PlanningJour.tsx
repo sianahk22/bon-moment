@@ -1,0 +1,92 @@
+import { useState } from 'react'
+import { deadlineText } from '../data/appareils'
+import { SLOTS, label, rangeText, ranges } from '../engine'
+import Icone from '../ui/Icone'
+import { Gain } from './commun'
+import type { EtatFoyer } from './useFoyer'
+
+// Planning de la journée, de 8h à 8h : une ligne par appareil.
+// Les zones vertes (bon moment) et rouges (à éviter) sont dessinées derrière les barres :
+// on voit d'un coup d'œil que chaque appareil tombe au bon moment.
+export default function PlanningJour({ foyer, maintenant }: { foyer: EtatFoyer; maintenant: number }) {
+  const j = foyer.aujourdhui
+  const [habitudes, setHabitudes] = useState(false)
+  const pos = (a: number, b: number) => ({ left: `${(a / SLOTS) * 100}%`, width: `${((b - a + 1) / SLOTS) * 100}%` })
+  const zones = (q: 'bon' | 'eviter') => ranges(j.qualites.flatMap((x, i) => (x === q ? [i] : [])))
+  const bons = zones('bon'), aEviter = zones('eviter')
+  const maxSun = Math.max(.001, ...j.f.solar)
+  const soleil = `M0 10 ${j.f.solar.map((v, i) => `L${i + .5} ${(10 - 9 * v / maxSun).toFixed(2)}`).join(' ')} L${SLOTS} 10 Z`
+  const repere = { left: `${((maintenant + .5) / SLOTS) * 100}%` }
+
+  const Fond = () => (
+    <>
+      {bons.map(([a, b]) => <i key={`b${a}`} className="pj__zone pj__zone--bon" style={pos(a, b)} />)}
+      {aEviter.map(([a, b]) => <i key={`e${a}`} className="pj__zone pj__zone--eviter" style={pos(a, b)} />)}
+      <i className="pj__maintenant" style={repere} />
+    </>
+  )
+
+  return (
+    <div className="pj">
+      {/* En-tête : soleil disponible et heures */}
+      <div className="pj__ligne pj__ligne--entete" aria-hidden="true">
+        <span className="pj__gauche"><span className="surtitre">Soleil du quartier</span></span>
+        <div className="pj__piste pj__piste--entete">
+          <svg className="pj__soleil" viewBox={`0 0 ${SLOTS} 10`} preserveAspectRatio="none"><path d={soleil} /></svg>
+          {[0, 8, 16, 24, 32, 40, 48].map(i => <span key={i} className="pj__heure" style={{ left: `${(i / SLOTS) * 100}%` }}>{label(i % SLOTS)}</span>)}
+          <i className="pj__maintenant" style={repere} />
+        </div>
+        <span className="pj__droite" />
+      </div>
+
+      {j.taches.map((t, k) => {
+        const appareil = foyer.appareils.find(a => a.type === t.type)
+        const gain = j.f.naive.per[k].cost - j.bilan.per[k].cost
+        const fin = Math.min(t.deadline, SLOTS)
+        return (
+          <div key={t.id} className="pj__ligne">
+            <div className="pj__gauche">
+              <span className={`pj__icone ${t.auto ? 'pj__icone--auto' : 'pj__icone--rappel'}`}><Icone nom={appareil?.icone ?? 'appareils'} taille={18} /></span>
+              <span className="pj__nom">
+                <b>{t.name}</b>
+                <span className="pj__creneau chiffre">{rangeText(j.reel[k])}</span>
+                <small>{deadlineText(t.deadlineH)} · {t.auto ? 'automatique' : 'rappel'}</small>
+              </span>
+            </div>
+
+            <div className="pj__piste">
+              <Fond />
+              {habitudes && ranges(j.f.habits[k]).map(([a, b]) => <span key={`h${a}`} className="pj__habitude" style={pos(a, b)} title="Heure habituelle, sans l'application" />)}
+              {ranges(j.reel[k]).map(([a, b]) => (
+                <span key={`r${a}`} className={`pj__barre ${t.auto ? 'pj__barre--auto' : 'pj__barre--rappel'}`} style={pos(a, b)} title={`${t.name} : ${label(a)}–${label(b + 1)}`} />
+              ))}
+              <i className="pj__echeance" style={{ left: `${(fin / SLOTS) * 100}%` }} title={`Échéance : ${t.deadlineH}h`} />
+            </div>
+
+            <div className="pj__droite">
+              <Gain valeur={gain} />
+              <button type="button" className="pj__retirer" onClick={() => foyer.retirer(t.id)} aria-label={`Retirer : ${t.name}`} title="Retirer">
+                <Icone nom="croix" taille={14} />
+              </button>
+            </div>
+          </div>
+        )
+      })}
+
+      {j.taches.length === 0 && <p className="pj__vide">Aucun besoin aujourd'hui. Ajoutez-en un ci-dessus.</p>}
+
+      <div className="pj__pied">
+        <div className="legende">
+          <span className="pj__legende pj__legende--bon">Bon moment</span>
+          <span className="pj__legende pj__legende--eviter">À éviter</span>
+          <span className="pj__legende pj__legende--auto">Automatique</span>
+          <span className="pj__legende pj__legende--rappel">Rappel</span>
+        </div>
+        <label className="pj__bascule">
+          <input type="checkbox" checked={habitudes} onChange={e => setHabitudes(e.target.checked)} />
+          Comparer à mes habitudes
+        </label>
+      </div>
+    </div>
+  )
+}

@@ -19,10 +19,10 @@ export default function EcranMoments({ foyer }: { foyer: EtatFoyer }) {
           <p className="surtitre">Depuis 60 jours avec Le Bon Moment</p>
           <p className="texte-2">Données de démonstration, calculées par le moteur jour après jour.</p>
         </div>
-        <Kpi libelle="Économisés" valeur={euro(jours.reduce((s, j) => s + j.economie, 0))} ton="bon" />
-        <Kpi libelle="CO₂ évité" valeur={kg(jours.reduce((s, j) => s + j.co2Evite, 0))} />
-        <Kpi libelle="Soleil du quartier" valeur={nombre(jours.reduce((s, j) => s + j.solaireKwh, 0))} unite="kWh" ton="soleil" />
-        <Kpi libelle="Moments suivis" valeur={`${Math.round(100 * suivis / moments.length)} %`} note={`${suivis} sur ${moments.length}`} />
+        <Kpi icone="euro" libelle="Économisés" valeur={euro(jours.reduce((s, j) => s + j.economie, 0))} ton="bon" />
+        <Kpi icone="feuille" libelle="CO₂ évité" valeur={kg(jours.reduce((s, j) => s + j.co2Evite, 0))} />
+        <Kpi icone="soleil" libelle="Soleil du quartier" valeur={nombre(jours.reduce((s, j) => s + j.solaireKwh, 0))} unite="kWh" ton="soleil" />
+        <Kpi icone="moments" libelle="Moments suivis" valeur={`${Math.round(100 * suivis / moments.length)} %`} note={`${suivis} sur ${moments.length}`} />
       </Panneau>
 
       <div className="ecran__colonnes">

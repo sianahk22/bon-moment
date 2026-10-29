@@ -15,6 +15,8 @@ export interface Profil {
   espace: string
   offre: string
   detail: string // ce qui distingue ce profil
+  promesse: string // ce que l'utilisateur obtient, en une phrase
+  points: [string, string]
   persona: string
   description: string
   icone: NomIcone
@@ -30,6 +32,8 @@ const BILAN: Onglet = { nom: 'Bilan', icone: 'bilan' }
 export const PROFILS: Profil[] = [
   {
     id: 'gratuit',
+    promesse: 'Je sais quand lancer mes appareils',
+    points: ['Rappels au bon moment', '2 appareils pilotés'],
     type: 'Particulier',
     espace: 'Habitant',
     offre: 'Gratuit',
@@ -43,6 +47,8 @@ export const PROFILS: Profil[] = [
   },
   {
     id: 'premium',
+    promesse: 'Mes appareils se lancent tout seuls',
+    points: ['Voiture et borne pilotées', 'Appareils illimités'],
     type: 'Particulier connecté',
     espace: 'Habitant',
     offre: 'Premium · 3,99 €',
@@ -56,6 +62,8 @@ export const PROFILS: Profil[] = [
   },
   {
     id: 'entreprise',
+    promesse: 'Je réduis la facture de mon commerce',
+    points: ['Fours, froid, livraisons', 'Pic sous l\'abonnement'],
     type: 'Entreprise',
     espace: 'Entreprise',
     offre: 'Pro · sur devis',
@@ -69,6 +77,8 @@ export const PROFILS: Profil[] = [
   },
   {
     id: 'ville',
+    promesse: 'Je pilote l\'énergie du quartier',
+    points: ['Jumeau numérique 3D', 'Coordination des voisins'],
     type: 'Collectivité',
     espace: 'Ville',
     offre: 'Licence annuelle',

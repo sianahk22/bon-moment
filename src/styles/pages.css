@@ -7,27 +7,6 @@
 
 .pied { height: 34px; display: flex; align-items: center; padding: 0 var(--e-4); font-size: 11.5px; color: var(--texte-3); border-top: 1px solid var(--trait); background: var(--surface); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 
-/* ---------- Écran de choix ---------- */
-.choix { min-height: calc(100dvh - 34px); max-width: 1120px; margin: 0 auto; padding: var(--e-5) var(--e-4) var(--e-7); display: flex; flex-direction: column; }
-.choix__tete { display: flex; align-items: center; justify-content: space-between; gap: var(--e-3); flex-wrap: wrap; }
-.choix__question { margin: auto 0 var(--e-5); padding-top: var(--e-7); font-size: 28px; }
-.choix__liste { list-style: none; margin: 0 0 auto; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--e-3); }
-.choix__carte {
-  height: 100%;
-  display: flex; flex-direction: column; gap: 4px;
-  padding: var(--e-5) var(--e-4);
-  background: var(--surface); color: var(--texte);
-  border: 1px solid var(--trait); border-radius: var(--rayon);
-  box-shadow: var(--ombre);
-  transition: border-color var(--anim), transform var(--anim), box-shadow var(--anim);
-}
-.choix__carte:hover, .choix__carte:focus-visible { border-color: var(--reseau); transform: translateY(-2px); box-shadow: var(--ombre-flottante); }
-.choix__icone { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 12px; background: var(--reseau-doux); color: var(--reseau-texte); margin-bottom: var(--e-3); }
-.choix__carte b { font-size: 18px; letter-spacing: -.015em; }
-.choix__offre { font-family: var(--f-chiffres); font-size: 12px; color: var(--reseau-texte); }
-.choix__detail { font-size: 13.5px; color: var(--texte-2); margin-top: var(--e-2); }
-.choix__persona { margin-top: auto; padding-top: var(--e-4); font-size: 12px; color: var(--texte-3); }
-
 /* ---------- Coque du tableau de bord ---------- */
 .coque {
   height: calc(100dvh - 34px);
@@ -162,7 +141,7 @@
   .ville__scene { position: relative; height: 58vh; min-height: 380px; border-radius: var(--rayon); }
   .hud { right: var(--e-4); }
   .ville__commandes, .ville__graphique { position: static; width: auto; }
-  .choix__liste, .offres { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .offres { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* ---------- Téléphone : la barre latérale passe en bas ---------- */
@@ -171,11 +150,10 @@
   .barre-haut { flex-wrap: wrap; padding: var(--e-2) var(--e-3); gap: var(--e-2); }
   .barre-haut .segments { order: 3; width: 100%; justify-content: space-between; }
   .barre-haut .segments button { flex: 1; }
-  .barre-haut .bandeau-demo, .marque span, .menu-profil__nom small { display: none; }
+  .barre-haut .bandeau-demo, .barre-haut .marque span, .menu-profil__nom small { display: none; }
   .barre-laterale { grid-row: 3; flex-direction: row; justify-content: space-around; border-right: 0; border-top: 1px solid var(--trait); padding: 6px; }
   .barre-laterale button { flex: 1; }
   .zone { grid-row: 2; }
-  .choix__liste, .offres { grid-template-columns: minmax(0, 1fr); }
-  .choix__question { padding-top: var(--e-5); }
+  .offres { grid-template-columns: minmax(0, 1fr); }
   .pied { white-space: normal; height: auto; padding: 6px var(--e-3); }
 }
