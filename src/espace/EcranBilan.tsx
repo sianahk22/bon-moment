@@ -37,7 +37,7 @@ export default function EcranBilan({ foyer, entreprise }: { foyer: EtatFoyer; en
         <Panneau><Kpi icone="euro" libelle="Économisés" valeur={euro(economie)} ton="bon"
           note={entreprise ? `${nombre(100 * economie / factureSans, 1)} % de la facture` : `moyenne d'un foyer du quartier : ${euro(ecoQuartier)}`}
           extra={`≈ ${euro(foyer.economieAnnuelle)} sur un an (moyenne de vos 60 jours)`} /></Panneau>
-        <Panneau><Kpi icone="soleil" libelle="Part de soleil" valeur={pct(part)} ton="soleil" note={`le quartier consomme ${pct(tauxQuartier)} de son soleil`} /></Panneau>
+        <Panneau><Kpi icone="soleil" libelle="Votre énergie solaire" valeur={pct(part)} ton="soleil" note="de l'énergie de vos appareils pilotés vient du soleil du quartier" /></Panneau>
         <Panneau><Kpi icone="feuille" libelle="CO₂ évité" valeur={kg(co2)} note={entreprise ? 'par rapport aux horaires habituels' : `moyenne du quartier : ${kg(co2Quartier)}`} /></Panneau>
         {entreprise && <Panneau><Kpi icone="reseau" libelle="Pic de puissance" valeur={nombre(pic, 1)} unite="kW" ton={pic > ABONNEMENT_LILY_KVA ? 'eviter' : 'reseau'} note={`abonnement ${ABONNEMENT_LILY_KVA} kVA · marge ${nombre(ABONNEMENT_LILY_KVA - pic, 1)} kW`} /></Panneau>}
       </div>
@@ -47,8 +47,12 @@ export default function EcranBilan({ foyer, entreprise }: { foyer: EtatFoyer; en
           <GraphiqueJours valeurs={jours.map(j => j.economie)} etiquettes={etiquettes} ton="bon" format={v => nombre(v, 2) + ' €'}
             reference={entreprise ? undefined : quartier.map(q => q.economieParFoyer)} />
         </Panneau>
-        <Panneau titre="Part de soleil local" icone="soleil">
-          <GraphiqueJours type="ligne" valeurs={jours.map(j => (j.kwhPilotes ? j.solaireKwh / j.kwhPilotes : 0))} etiquettes={etiquettes} ton="soleil" format={v => pct(v)} />
+        <Panneau titre="Votre énergie solaire, jour par jour" icone="soleil">
+          <GraphiqueJours valeurs={jours.map(j => (j.kwhPilotes ? j.solaireKwh / j.kwhPilotes : 0))} etiquettes={etiquettes} ton="soleil" format={v => pct(v)} />
+          <p className="bilan__explication">
+            Chaque barre : la part de l'énergie de vos appareils pilotés fournie par le soleil du quartier.
+            Le quartier, lui, consomme sur place <b className="chiffre">{pct(tauxQuartier)}</b> du soleil qu'il produit.
+          </p>
         </Panneau>
         {entreprise ? (
           <Panneau titre="Pic de puissance par jour" icone="eclair" action={<Reference texte={`Abonnement ${ABONNEMENT_LILY_KVA} kVA`} />}>

@@ -303,3 +303,7 @@
 .ajout-appareil p { font-size: 13px; padding-bottom: 10px; }
 .mode--nouveau { color: var(--soleil-texte); background: var(--soleil-doux); }
 @media (max-width: 720px) { .ajout-appareil { grid-template-columns: minmax(0, 1fr); } .coque--foyer .ecran__kpis > .panneau .kpi__action { padding-left: 0; } }
+
+/* Point 7 : explication sous le graphique d'énergie solaire */
+.bilan__explication { margin-top: var(--e-3); padding-top: var(--e-3); border-top: 1px solid rgba(19, 34, 43, .06); font-size: 13px; color: var(--texte-2); line-height: 1.5; }
+.bilan__explication b { color: var(--texte); font-weight: 500; }

@@ -25,7 +25,7 @@ export default function EcranAppareils({ foyer, gratuit, libelle }: { foyer: Eta
             note={gratuit ? 'limite de l\'offre Gratuite' : 'pilotage automatique illimité'} />
           {gratuit && <div className="kpi__action">{premium}</div>}
         </Panneau>
-        <Panneau><Kpi icone="eclair" libelle={`${libelle} suivis`} valeur={String(foyer.appareils.length)} note="consommation mesurée (simulée)" /></Panneau>
+        <Panneau><Kpi icone="eclair" libelle={`${libelle} suivis`} valeur={String(foyer.appareils.length)} note="consommation estimée" /></Panneau>
         <Panneau><Kpi icone="eclair" libelle="Consommation moyenne" valeur={nombre(total, 1)} unite="kWh/jour" note="sur les 30 derniers jours" /></Panneau>
         <Panneau><Kpi icone="soleil" libelle="Part pilotable" valeur={`${Math.round(100 * pilotes / total)} %`} ton="soleil" note="peut être placée au bon moment" /></Panneau>
       </div>
