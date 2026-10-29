@@ -6,6 +6,7 @@ import Icone from '../ui/Icone'
 import { useSimulation } from '../ui/simulation'
 import CalendrierSemaine from './CalendrierSemaine'
 import { kg } from './commun'
+import MonQuartier from './MonQuartier'
 import PlanningJour from './PlanningJour'
 import type { EtatFoyer } from './useFoyer'
 
@@ -30,6 +31,8 @@ export default function EcranPlanning({ foyer }: { foyer: EtatFoyer }) {
         <Panneau><Kpi icone="soleil" libelle="Soleil du quartier" valeur={pct(part)} ton="soleil" note="de l'énergie de vos appareils pilotés" /></Panneau>
         <Panneau><Kpi icone="coche" libelle="Échéances tenues" valeur={`${tenues} / ${j.taches.length}`} note={tenues === j.taches.length ? 'tout est prêt à l\'heure' : 'une échéance est trop courte'} /></Panneau>
       </div>
+
+      <MonQuartier />
 
       <Panneau titre="Ma journée, de 8h à 8h" icone="planning" action={
         <form className="ajout-rapide" onSubmit={e => { e.preventDefault(); foyer.ajouter(type, echeance) }}>
