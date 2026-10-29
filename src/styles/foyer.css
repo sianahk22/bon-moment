@@ -64,6 +64,7 @@
 .coque--foyer .ecran__kpis > .panneau + .panneau { border-left: 1px solid rgba(19, 34, 43, .08); }
 .coque--foyer .kpi--icone { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; align-items: center; }
 .coque--foyer .kpi--icone > :not(.kpi__icone) { grid-column: 2; }
+.coque--foyer .kpi__extra { justify-self: start; }
 .coque--foyer .kpi__icone {
   grid-row: 1 / span 3; align-self: start;
   width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px;

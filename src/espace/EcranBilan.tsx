@@ -35,7 +35,8 @@ export default function EcranBilan({ foyer, entreprise }: { foyer: EtatFoyer; en
       <div className="ecran__kpis">
         {entreprise && <Panneau><Kpi icone="bilan" libelle="Facture électricité" valeur={euro(facture)} note={`au lieu de ${euro(factureSans)} sans pilotage`} /></Panneau>}
         <Panneau><Kpi icone="euro" libelle="Économisés" valeur={euro(economie)} ton="bon"
-          note={entreprise ? `${nombre(100 * economie / factureSans, 1)} % de la facture` : `moyenne d'un foyer du quartier : ${euro(ecoQuartier)}`} /></Panneau>
+          note={entreprise ? `${nombre(100 * economie / factureSans, 1)} % de la facture` : `moyenne d'un foyer du quartier : ${euro(ecoQuartier)}`}
+          extra={`≈ ${euro(foyer.economieAnnuelle)} sur un an (moyenne de vos 60 jours)`} /></Panneau>
         <Panneau><Kpi icone="soleil" libelle="Part de soleil" valeur={pct(part)} ton="soleil" note={`le quartier consomme ${pct(tauxQuartier)} de son soleil`} /></Panneau>
         <Panneau><Kpi icone="feuille" libelle="CO₂ évité" valeur={kg(co2)} note={entreprise ? 'par rapport aux horaires habituels' : `moyenne du quartier : ${kg(co2Quartier)}`} /></Panneau>
         {entreprise && <Panneau><Kpi icone="reseau" libelle="Pic de puissance" valeur={nombre(pic, 1)} unite="kW" ton={pic > ABONNEMENT_LILY_KVA ? 'eviter' : 'reseau'} note={`abonnement ${ABONNEMENT_LILY_KVA} kVA · marge ${nombre(ABONNEMENT_LILY_KVA - pic, 1)} kW`} /></Panneau>}

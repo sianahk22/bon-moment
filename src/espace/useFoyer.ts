@@ -50,6 +50,8 @@ export function useFoyer(userId: UserId, gratuit: boolean) {
 
   const historique = useMemo(() => historiqueDe(userId), [userId])
   const quartier = useMemo(() => historiqueQuartier(), [])
+  // Économie estimée sur un an : moyenne des 60 jours d'historique × 365.
+  const economieAnnuelle = useMemo(() => historique.jours.reduce((s, j) => s + j.economie, 0) / historique.jours.length * 365, [historique])
 
   // Une tâche est automatique si son appareil est connecté et en mode automatique, sinon c'est un rappel.
   const avecMode = useCallback((liste: TacheFoyer[]) => liste.map(t => {
@@ -81,7 +83,7 @@ export function useFoyer(userId: UserId, gratuit: boolean) {
 
   return {
     u, appareils, connectes, limiteAtteinte, setLimiteAtteinte, basculerAuto,
-    taches, aujourdhui, semaine, historique, quartier, valides,
+    taches, aujourdhui, semaine, historique, quartier, valides, economieAnnuelle,
     ajouter: (type: DeviceId, echeanceH: number) => setTaches(l => [...l, mkTask(type, echeanceH)]),
     retirer: (id: number) => setTaches(l => l.filter(t => t.id !== id)),
     deplacer: (j: JourPlanifie, k: number) => {

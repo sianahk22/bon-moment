@@ -24,7 +24,8 @@ export default function EcranPlanning({ foyer }: { foyer: EtatFoyer }) {
   return (
     <div className="ecran">
       <div className="ecran__kpis">
-        <Panneau><Kpi icone="euro" libelle="Économie du jour" valeur={euro(Math.max(0, economie))} ton="bon" note={`${euro(j.bilan.cost)} au lieu de ${euro(j.f.naive.cost)}`} /></Panneau>
+        <Panneau><Kpi icone="euro" libelle="Économie du jour" valeur={euro(Math.max(0, economie))} ton="bon" note={`${euro(j.bilan.cost)} au lieu de ${euro(j.f.naive.cost)}`}
+          extra={`≈ ${euro(foyer.economieAnnuelle)} sur un an`} /></Panneau>
         <Panneau><Kpi icone="feuille" libelle="CO₂ évité" valeur={kg(Math.max(0, co2))} note="par rapport à vos habitudes" /></Panneau>
         <Panneau><Kpi icone="soleil" libelle="Soleil du quartier" valeur={pct(part)} ton="soleil" note="de l'énergie de vos appareils pilotés" /></Panneau>
         <Panneau><Kpi icone="coche" libelle="Échéances tenues" valeur={`${tenues} / ${j.taches.length}`} note={tenues === j.taches.length ? 'tout est prêt à l\'heure' : 'une échéance est trop courte'} /></Panneau>

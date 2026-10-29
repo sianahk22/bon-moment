@@ -111,3 +111,4 @@
 }
 .segments button[aria-pressed='true'] { background: var(--surface); color: var(--texte); box-shadow: 0 1px 3px rgba(19, 34, 43, .12); }
 .segments small { font-weight: 450; color: var(--texte-3); margin-left: 4px; }
+.kpi__extra { align-self: flex-start; margin-top: 4px; padding: 3px 9px; border-radius: var(--rayon-pilule); background: var(--bon-doux); color: var(--bon); font-size: 12px; font-weight: 600; white-space: nowrap; }
