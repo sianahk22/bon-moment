@@ -79,3 +79,20 @@ describe('Anaïs (nouveau profil)', () => {
     expect(f.planned.cost).toBeLessThanOrEqual(f.naive.cost)
   })
 })
+
+describe('départage par le soleil (ajout signalé)', () => {
+  it('en cas d\'égalité, les tâches d\'Anaïs se placent sous le pic du soleil', async () => {
+    const { calculerFoyer, slotCtx, label } = await import('.')
+    const ctx = slotCtx('ete', false)
+    const sans = calculerFoyer(ctx, USERS.anais, .35)
+    const avec = calculerFoyer(ctx, USERS.anais, .35, true)
+    const centre = (s: number[]) => ctx[Math.round((s[0] + s[s.length - 1]) / 2)].h
+    USERS.anais.tasks.forEach((t, k) => {
+      console.log(t.name, 'sans départage :', label(sans.slots[k][0]), '| avec :', label(avec.slots[k][0]))
+      expect(Math.abs(centre(avec.slots[k]) - 13.75)).toBeLessThanOrEqual(Math.abs(centre(sans.slots[k]) - 13.75))
+    })
+    // Le coût ne doit jamais augmenter : on ne départage que des égalités.
+    expect(avec.planned.cost).toBeLessThanOrEqual(sans.planned.cost + 1e-9)
+    expect(avec.planned.co2).toBeLessThanOrEqual(sans.planned.co2 + 1e-9)
+  })
+})

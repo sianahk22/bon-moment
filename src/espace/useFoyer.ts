@@ -22,7 +22,7 @@ export interface JourPlanifie {
 export const cle = (decalage: number, t: TacheFoyer, k: number) => `${decalage}-${t.id}-${k}`
 
 function planifierJour(cal: JourCalendrier, ctx: SlotCtx[], foyer: Foyer, w: number, choix: Record<string, number>): JourPlanifie {
-  const f = calculerFoyer(ctx, foyer, w)
+  const f = calculerFoyer(ctx, foyer, w, true)
   const options = foyer.tasks.map((t, k) => {
     const autres = alternatives(t, ctx, f.solar, f.opts.baseLoad, w).filter(s => s.join() !== f.slots[k].join())
     return [f.slots[k], ...autres].slice(0, 3)

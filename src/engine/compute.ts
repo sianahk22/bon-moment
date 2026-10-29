@@ -27,9 +27,10 @@ export interface Foyer {
 }
 
 // Partie « foyer » de compute() : planifie les tâches d'un foyer pour une journée donnée (ctx).
-export function calculerFoyer(ctx: SlotCtx[], u: Foyer, w: number) {
+// `departageSoleil` : voir PlanOptions (désactivé dans calculer(), comme la maquette).
+export function calculerFoyer(ctx: SlotCtx[], u: Foyer, w: number, departageSoleil = false) {
   const solar = ctx.map(c => u.share * c.sun)
-  const opts = { solar, baseLoad: u.fond ?? Array(SLOTS).fill(u.base), cap: u.cap, capW: 3, w }
+  const opts = { solar, baseLoad: u.fond ?? Array(SLOTS).fill(u.base), cap: u.cap, capW: 3, w, departageSoleil }
   const slots = plan(u.tasks, ctx, opts)
   const habits = u.tasks.map(habitSlots)
   return { u, ctx, solar, opts, slots, habits, planned: evaluate(u.tasks, slots, ctx, solar), naive: evaluate(u.tasks, habits, ctx, solar) }

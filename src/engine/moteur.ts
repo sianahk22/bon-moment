@@ -16,6 +16,9 @@ export interface PlanOptions {
   w: number // 0 = économies, 1 = écologie
   cap?: number // capacité à ne pas dépasser (kW)
   capW?: number // poids de la pénalité de dépassement
+  // Ajout signalé (absent de la maquette) : en cas d'égalité parfaite de score,
+  // choisir le créneau où il reste le plus de soleil. Désactivé par défaut = résultats de la maquette.
+  departageSoleil?: boolean
 }
 
 export interface Bilan {
@@ -47,14 +50,14 @@ export function plan(tasks: Tache[], ctx: SlotCtx[], o: PlanOptions): number[][]
     const t = tasks[k], sc = (i: number) => slotScore(t.p, i, ctx, solar, load, o)
     let slots: number[]
     if (!t.interruptible) {
-      let best = 0, bs = Infinity
+      let best = 0, bs = Infinity, bSol = -Infinity
       for (let s = 0; s + t.dur <= t.deadline; s++) {
-        let sum = 0; for (let j = s; j < s + t.dur; j++) sum += sc(j)
-        if (sum < bs - 1e-9) { bs = sum; best = s }
+        let sum = 0, sol = 0; for (let j = s; j < s + t.dur; j++) { sum += sc(j); sol += solar[j] }
+        if (sum < bs - 1e-9 || (o.departageSoleil && Math.abs(sum - bs) <= 1e-9 && sol > bSol)) { bs = sum; best = s; bSol = sol }
       }
       slots = Array.from({ length: t.dur }, (_, j) => best + j)
     } else {
-      slots = [...Array(t.deadline).keys()].sort((a, b) => sc(a) - sc(b) || a - b).slice(0, t.dur).sort((a, b) => a - b)
+      slots = [...Array(t.deadline).keys()].sort((a, b) => sc(a) - sc(b) || (o.departageSoleil ? solar[b] - solar[a] : 0) || a - b).slice(0, t.dur).sort((a, b) => a - b)
     }
     for (const i of slots) { const loc = Math.min(t.p, Math.max(0, solar[i])); solar[i] -= loc; load[i] += t.p }
     out[k] = slots

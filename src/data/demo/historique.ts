@@ -107,7 +107,7 @@ function journee(userId: UserId, cal: JourCalendrier, r: () => number): JourHist
   const fixe = ctx.map(c => mesures.reduce((s, a) => s + a.profil!(c.h) * variation, 0))
   const solar = ctx.map(c => u.share * c.sun)
   const fond = AVEC_FOND.includes(userId) ? fixe.map(f => f + u.base) : Array(SLOTS).fill(u.base)
-  const opts = { solar, baseLoad: fond, cap: u.cap, capW: 3, w: W }
+  const opts = { solar, baseLoad: fond, cap: u.cap, capW: 3, w: W, departageSoleil: true }
   const planifie = plan(taches, ctx, opts)
   const habitudes = taches.map(habitSlots)
 
