@@ -5,7 +5,7 @@ import {
 import type { NomIcone } from '../../ui/Icone'
 import { USERS, creerTache, type DeviceId, type UserId } from '../appareils'
 import { CALENDRIER, JOURS_HISTORIQUE, jourCalendrier, type JourCalendrier } from './calendrier'
-import { INVENTAIRES, type Appareil } from './inventaires'
+import { AVEC_FOND, INVENTAIRES, type Appareil } from './inventaires'
 
 // Historique de démonstration : 60 jours d'utilisation de l'application.
 // Chaque journée passe par le VRAI moteur (plan + evaluate) avec le scénario Tempo du jour,
@@ -101,8 +101,13 @@ function journee(userId: UserId, cal: JourCalendrier, r: () => number): JourHist
     const a = appareilDe(inv, type)
     return { ...creerTache(type, echeance(userId, type), k), auto: a ? a.connecte && a.auto : false }
   })
+  // Appareils seulement mesurés : leur profil moyen, avec une petite variation selon le jour.
+  const variation = .85 + .3 * r()
+  const mesures = inv.filter(a => a.profil)
+  const fixe = ctx.map(c => mesures.reduce((s, a) => s + a.profil!(c.h) * variation, 0))
   const solar = ctx.map(c => u.share * c.sun)
-  const opts = { solar, baseLoad: Array(SLOTS).fill(u.base), cap: u.cap, capW: 3, w: W }
+  const fond = AVEC_FOND.includes(userId) ? fixe.map(f => f + u.base) : Array(SLOTS).fill(u.base)
+  const opts = { solar, baseLoad: fond, cap: u.cap, capW: 3, w: W }
   const planifie = plan(taches, ctx, opts)
   const habitudes = taches.map(habitSlots)
 
@@ -115,10 +120,6 @@ function journee(userId: UserId, cal: JourCalendrier, r: () => number): JourHist
   const avec = evaluate(taches, reel, ctx, solar)
   const sans = evaluate(taches, habitudes, ctx, solar)
 
-  // Appareils seulement mesurés : leur profil moyen, avec une petite variation selon le jour.
-  const variation = .85 + .3 * r()
-  const mesures = inv.filter(a => a.profil)
-  const fixe = ctx.map(c => mesures.reduce((s, a) => s + a.profil!(c.h) * variation, 0))
   const flexAvec = Array(SLOTS).fill(0), flexSans = Array(SLOTS).fill(0)
   taches.forEach((t, k) => { reel[k].forEach(i => flexAvec[i] += t.p); habitudes[k].forEach(i => flexSans[i] += t.p) })
 

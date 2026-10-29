@@ -1,4 +1,4 @@
-import { bump } from '../../engine'
+import { SLOTS, bump, hourOf } from '../../engine'
 import type { NomIcone } from '../../ui/Icone'
 import type { DeviceId, UserId } from '../appareils'
 
@@ -62,3 +62,14 @@ export const INVENTAIRES: Record<UserId, Appareil[]> = {
     { id: 'caisse', nom: 'Caisse et terminal', detail: 'Toujours allumés', icone: 'ordinateur', puissance: .05, connecte: false, auto: false, profil: () => .05 },
   ],
 }
+
+// Consommation fixe d'un lieu, créneau par créneau (kW) : fond + appareils mesurés.
+// Donnée au moteur pour la boulangerie, afin qu'il ne recharge pas l'utilitaire pendant la cuisson.
+export function consommationFixe(userId: UserId, base: number, variation = 1): number[] {
+  const mesures = INVENTAIRES[userId].filter(a => a.profil)
+  return Array.from({ length: SLOTS }, (_, i) => {
+    const h = (hourOf(i) + .25) % 24
+    return base + mesures.reduce((s, a) => s + a.profil!(h) * variation, 0)
+  })
+}
+export const AVEC_FOND: UserId[] = ['lily']

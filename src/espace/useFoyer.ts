@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { USERS, mkTask, type DeviceId, type UserId } from '../data/appareils'
-import { INVENTAIRES, LIMITE_GRATUIT, historiqueDe, historiqueQuartier, jourCalendrier, type Appareil, type JourCalendrier } from '../data/demo'
+import { AVEC_FOND, INVENTAIRES, LIMITE_GRATUIT, consommationFixe, historiqueDe, historiqueQuartier, jourCalendrier, type Appareil, type JourCalendrier } from '../data/demo'
 import {
   alternatives, calculerFoyer, evaluate, qualiteCreneaux, slotCtx,
   type Foyer, type Qualite, type ResultatFoyer, type SlotCtx, type TacheFoyer,
@@ -37,10 +37,13 @@ function planifierJour(cal: JourCalendrier, ctx: SlotCtx[], foyer: Foyer, w: num
 
 // État d'un espace Particulier ou Entreprise : appareils, besoins du jour, semaine, historique.
 export function useFoyer(userId: UserId, gratuit: boolean) {
-  const u = USERS[userId]
   const sim = useSimulation()
+  // Pour la boulangerie, le moteur connaît la consommation des fours (voir consommationFixe).
+  const u = useMemo(() => (AVEC_FOND.includes(userId) ? { ...USERS[userId], fond: consommationFixe(userId, USERS[userId].base) } : USERS[userId]), [userId])
   const [appareils, setAppareils] = useState<Appareil[]>(() => INVENTAIRES[userId].map(a => ({ ...a })))
-  const [taches, setTaches] = useState<TacheFoyer[]>(() => u.tasks.slice())
+  // Inès : la voiture fait partie de ses habitudes (semaine, historique), mais la liste du jour
+  // commence sans elle, pour que « Voiture chargée pour 7 h » soit ajoutée pendant la démo.
+  const [taches, setTaches] = useState<TacheFoyer[]>(() => u.tasks.filter(t => !(userId === 'ines' && t.type === 'voiture')))
   const [choix, setChoix] = useState<Record<string, number>>({})
   const [valides, setValides] = useState<Record<string, boolean>>({})
   const [limiteAtteinte, setLimiteAtteinte] = useState(false)

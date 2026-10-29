@@ -21,6 +21,7 @@ export interface Foyer {
   share: number // part du soleil du quartier réservée à ce foyer (kW crête)
   base: number // consommation de fond (kW)
   cap: number // puissance maximale souhaitée (kW)
+  fond?: number[] // ajout signalé : consommation fixe par créneau (kW) ; sinon `base` constant, comme la maquette
   tasks: TacheFoyer[]
   types: string[] // appareils proposés à l'ajout
 }
@@ -28,7 +29,7 @@ export interface Foyer {
 // Partie « foyer » de compute() : planifie les tâches d'un foyer pour une journée donnée (ctx).
 export function calculerFoyer(ctx: SlotCtx[], u: Foyer, w: number) {
   const solar = ctx.map(c => u.share * c.sun)
-  const opts = { solar, baseLoad: Array(SLOTS).fill(u.base), cap: u.cap, capW: 3, w }
+  const opts = { solar, baseLoad: u.fond ?? Array(SLOTS).fill(u.base), cap: u.cap, capW: 3, w }
   const slots = plan(u.tasks, ctx, opts)
   const habits = u.tasks.map(habitSlots)
   return { u, ctx, solar, opts, slots, habits, planned: evaluate(u.tasks, slots, ctx, solar), naive: evaluate(u.tasks, habits, ctx, solar) }
