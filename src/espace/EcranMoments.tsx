@@ -3,6 +3,7 @@ import { euro, isHC, rangeText } from '../engine'
 import { Kpi, Panneau } from '../ui/composants'
 import Icone from '../ui/Icone'
 import { Gain, ModePuce, StatutPuce, TempoPuce, kg, nombre } from './commun'
+import ApercuRappel from './ApercuRappel'
 import type { EtatFoyer, JourPlanifie } from './useFoyer'
 
 export default function EcranMoments({ foyer }: { foyer: EtatFoyer }) {
@@ -36,6 +37,11 @@ export default function EcranMoments({ foyer }: { foyer: EtatFoyer }) {
         </div>
 
         <div className="ecran__pile">
+          {foyer.aujourdhui.taches.some(t => !t.auto) && (
+            <Panneau titre="Votre rappel sur téléphone" icone="cloche">
+              <ApercuRappel foyer={foyer} />
+            </Panneau>
+          )}
           <Panneau titre="Derniers moments" icone="bilan">
             <ul className="historique">
               {recents.map((m, i) => (
